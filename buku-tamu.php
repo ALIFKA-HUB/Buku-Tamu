@@ -8,6 +8,26 @@ include_once('template/header.php');
 
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800">Buku Tamu</h1>
+
+
+  <?php
+  // jika ada tombol simpan
+  if (isset($_POST['simpan'])) {
+    if (tambah_tamu($_POST) > 0) {
+  ?>
+      <div class="alert alert-success" role="alert">
+        Data berhasil disimpan!
+      </div>
+    <?php
+    } else {
+    ?>
+      <div class="alert alert-danger" role="alert">
+        Data gagal disimpan!
+      </div>
+  <?php
+    }
+  }
+  ?>
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -66,6 +86,25 @@ include_once('template/header.php');
 </div>
 <!-- /.container-fluid -->
 
+<?php
+// mengambil data barang dari tabel dengan kode terbesar
+$query = mysqli_query($koneksi, "SELECT max(id_tamu) as kodeTerbesar FROM tamu");
+$data = mysqli_fetch_array($query);
+$kodeTamu = $data['kodeTerbesar'];
+
+// mengambil angka dari kode barang terbesar, menggunakan fungsi substr dan diubah ke integer dengan (int)
+$urutan = (int) substr($kodeTamu, 2, 3);
+
+// nomor yang diambil akan ditambah 1 untuk menentukan nomor urut berikutnya
+$urutan++;
+
+// membuat kode barang baru
+// string sprintf("%03s", $urutan); berfungsi untuk membuat string menjadi 3 karakter
+$huruf = "zt";
+$kodeTamu = $huruf . sprintf("%03s", $urutan);
+?>
+
+
 <!-- Modal Tambah -->
 <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -123,13 +162,6 @@ include_once('template/header.php');
           </div>
         </form>
       </div>
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-
     </div>
   </div>
 </div>
