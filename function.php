@@ -61,3 +61,15 @@ function ubah_tamu($data)
 
     return mysqli_affected_rows($koneksi);
 }
+
+// function hapus data tamu
+function hapus_tamu($id)
+{
+    global $koneksi;
+
+    $query = "DELETE FROM tamu WHERE id_tamu = '$id'";
+
+    mysqli_query($koneksi, $query);
+
+    return mysqli_affected_rows($koneksi);
+}
