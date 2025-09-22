@@ -92,7 +92,7 @@ $urutan++;
 // membuat kode barang baru
 // string sprintf("%03s", $urutan); berfungsi untuk membuat string menjadi 3 karakter
 // angka yang diambil tadi digabungkan dengan kode huruf yang kita inginkan, misalnya usr
-$huruf = "usr";
+$huruf = "u";
 $kodeuser = $huruf . sprintf("%02s", $urutan);
 ?>
 
