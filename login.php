@@ -1,55 +1,33 @@
 <?php
-// memulai session
+require('koneksi.php');
 session_start();
 
-// cek bila ada user yang sudah login maka akan redirect ke halaman dashboard
 if (isset($_SESSION['login'])) {
-  header('Location: index.php');
-}
-
-if (password_verify($password, $row['password'])) {
-  // set session
-  $_SESSION['login'] = true;
-  $_SESSION['username'] = $username;
-}
-
-if (password_verify($password, $row['password'])) {
-  // set session
-  $_SESSION['login'] = true;
-  $_SESSION['username'] = $username;
-  $_SESSION['role'] = $row['user_role'];
-
-  // login berhasil
   header("Location: index.php");
-  exit;
+  exit();
 }
 
-
-// panggil file koneksi.php
-require 'koneksi.php';
 if (isset($_POST['login'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
 
   $result = mysqli_query($koneksi, "SELECT * FROM users WHERE username = '$username'");
 
-  // cek apakah ada username
-  if (mysqli_num_rows($result) === 1) {
 
-    // cek apakah passwordnya benar
+  if (mysqli_num_rows($result) === 1) {
     $row = mysqli_fetch_assoc($result);
 
     if (password_verify($password, $row['password'])) {
-      // login berhasil
+      $_SESSION['login'] = true;
+      $_SESSION['username'] = $username;
+      $_SESSION['role'] = $row['user_role'];
       header("Location: index.php");
-      exit;
+      exit();
     }
   }
-
   $error = true;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,18 +56,14 @@ if (isset($_POST['login'])) {
 <body class="bg-gradient-primary">
 
   <div class="container">
-
     <?php
-    if (isset($error)) : ?>
+    if (isset($error)): ?>
       <div class="alert alert-danger mt-3" role="alert">
-        Username atau password salah!
+        Username atau Password Salah!
       </div>
-    <?php
-    endif;
-    ?>
-
+    <?php endif; ?>
     <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center p-8">
 
       <div class="col-xl-10 col-lg-12 col-md-9">
 
@@ -98,33 +72,35 @@ if (isset($_POST['login'])) {
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                <img src="assets/images/login-page.png" alt="">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                  <img src="assets/img/login-page.png" alt="Login Image"
+                    class="img-fluid rounded-start" style="width: 90%; height: auto;">
+                </div>
+
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form method="post" action="" class="user">
+                  <form class="user" method="post" action="">
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user"
-                        id="username" name="username" placeholder="Username...">
+                      <input type="text" class="form-control form-control-user" id="username"
+                        name="username" placeholder="Username...">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user"
-                        id="password" name="password" placeholder="Password..">
+                      <input type="password" class="form-control form-control-user" id="password"
+                        placeholder="Password..." name="password">
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input"
-                          id="remember" name="remember">
-                        <label class="custom-control-label" for="customCheck">
-                          Remember Me
-                        </label>
+                        <input type="checkbox" class="custom-control-input" id="remember"
+                          name="remember">
+                        <label class="custom-control-label" for="customCheck">Remember
+                          Me</label>
                       </div>
                     </div>
-                    <button type="submit" name="login"
-                      class="btn btn-primary btn-user btn-block">
+                    <button type="submit" class="btn btn-primary btn-user btn-block" name="login">
                       Login
                     </button>
                   </form>
@@ -132,12 +108,14 @@ if (isset($_POST['login'])) {
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>
+                  <div class="text-center">
+                    <a class="small" href="register.html">Create an Account!</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
 
       </div>
 
@@ -147,7 +125,7 @@ if (isset($_POST['login'])) {
 
   <!-- Bootstrap core JavaScript-->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
