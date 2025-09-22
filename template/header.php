@@ -1,3 +1,27 @@
+<?php
+// cek apabila ada user login dan user role nya adalah admin maka tampilkan user
+if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') :
+?>
+  <li class="nav-item">
+    <a class="nav-link" href="users.php">
+      <i class="fas fa-fw fa-users"></i>
+      <span>User</span>
+    </a>
+  </li>
+<?php endif; ?>
+
+<?php
+// cek apabila ada user login dan user role nya adalah operator maka tampilkan buku-tamu
+if (isset($_SESSION['role']) && $_SESSION['role'] == 'operator') :
+?>
+  <li class="nav-item">
+    <a class="nav-link" href="buku-tamu.php">
+      <i class="fas fa-fw fa-book-open"></i>
+      <span>Buku Tamu</span>
+    </a>
+  </li>
+<?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,7 +108,7 @@
           </a>
         </li>
       <?php endif; ?>
-      
+
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

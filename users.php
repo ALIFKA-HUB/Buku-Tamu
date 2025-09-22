@@ -1,4 +1,12 @@
 <?php
+include_once('templates/header.php');
+
+// pengecekan user role bukan admin maka tidak boleh mengakses halaman
+if(($_SESSION['role']) != 'admin') {
+    echo "<script>alert('anda tidak memiliki akses')</script>";
+    echo "<script>window.location.href='index.php'</script>";
+}
+
 require_once('function.php');
 include_once('template/header.php');
 ?>

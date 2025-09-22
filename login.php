@@ -5,12 +5,28 @@ session_start();
 // cek bila ada user yang sudah login maka akan redirect ke halaman dashboard
 if (isset($_SESSION['login'])) {
   header('Location: index.php');
+}
+
+if (password_verify($password, $row['password'])) {
+  // set session
+  $_SESSION['login'] = true;
+  $_SESSION['username'] = $username;
+}
+
+if (password_verify($password, $row['password'])) {
+  // set session
+  $_SESSION['login'] = true;
+  $_SESSION['username'] = $username;
+  $_SESSION['role'] = $row['user_role'];
+
+  // login berhasil
+  header("Location: index.php");
   exit;
 }
 
+
 // panggil file koneksi.php
 require 'koneksi.php';
-
 if (isset($_POST['login'])) {
   $username = $_POST['username'];
   $password = $_POST['password'];
@@ -24,17 +40,12 @@ if (isset($_POST['login'])) {
     $row = mysqli_fetch_assoc($result);
 
     if (password_verify($password, $row['password'])) {
-      // set session
-      $_SESSION['login'] = true;
-      $_SESSION['username'] = $username;
-
       // login berhasil
       header("Location: index.php");
       exit;
     }
   }
 
-  // kalau gagal login
   $error = true;
 }
 ?>
@@ -44,6 +55,7 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -54,25 +66,33 @@ if (isset($_POST['login'])) {
 
   <!-- Custom fonts for this template-->
   <link href="assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+
 </head>
 
 <body class="bg-gradient-primary">
 
   <div class="container">
 
-    <?php if (isset($error)) : ?>
+    <?php
+    if (isset($error)) : ?>
       <div class="alert alert-danger mt-3" role="alert">
         Username atau password salah!
       </div>
-    <?php endif; ?>
+    <?php
+    endif;
+    ?>
 
     <!-- Outer Row -->
     <div class="row justify-content-center">
+
       <div class="col-xl-10 col-lg-12 col-md-9">
+
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
@@ -117,7 +137,10 @@ if (isset($_POST['login'])) {
             </div>
           </div>
         </div>
+
+
       </div>
+
     </div>
 
   </div>
