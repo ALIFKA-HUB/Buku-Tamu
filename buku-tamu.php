@@ -1,5 +1,5 @@
 <?php
-include_once('templates/header.php');
+include_once('template/header.php');
 
 // pengecekan user role bukan admin maka tidak boleh mengakses halaman
 if (($_SESSION['role']) != 'admin') {

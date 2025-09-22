@@ -3,19 +3,21 @@ include 'koneksi.php';
 include 'function.php';
 include('template/header.php');
 
-include_once('template/header.php');
-
 if (isset($_POST['tampilkan'])) {
-    $p_awal  = $_POST['p_awal'];
-    $p_akhir = $_POST['p_akhir'];
+  $p_awal  = $_POST['p_awal'];
+  $p_akhir = $_POST['p_akhir'];
 
+  if (!empty($p_awal) && !empty($p_akhir)) {
     $link = "export-laporan.php?cari=true&p_awal=$p_awal&p_akhir=$p_akhir";
-    // query sesuai dengan keyword
-    $buku_tamu = query("SELECT * FROM tamu WHERE tanggal BETWEEN '$p_awal' AND '$p_akhir' ");
-} else {
-    // query ambil semua data buku tamu
+    $buku_tamu = query("SELECT * FROM tamu WHERE tanggal BETWEEN '$p_awal' AND '$p_akhir' ORDER BY tanggal ASC");
+  } else {
     $buku_tamu = query("SELECT * FROM tamu ORDER BY tanggal DESC");
+  }
+} else {
+  $buku_tamu = query("SELECT * FROM tamu ORDER BY tanggal DESC");
 }
+
+
 
 ?>
 
@@ -106,27 +108,24 @@ if (isset($_POST['tampilkan'])) {
         </thead>
         <tbody>
           <?php
-          if (isset($_POST['tampilkan'])) {
-            $p_awal  = $_POST['p_awal'];
-            $p_akhir = $_POST['p_akhir'];
-            // penomoran auto-increment
-            $no = 1;
-            foreach ($buku_tamu as $tamu) : ?>
-              <tr>
-                <td><?= $no++; ?></td>
-                <td><?= $tamu['tanggal'] ?></td>
-                <td><?= $tamu['nama_tamu'] ?></td>
-                <td><?= $tamu['alamat'] ?></td>
-                <td><?= $tamu['no_hp'] ?></td>
-                <td><?= $tamu['bertemu'] ?></td>
-                <td><?= $tamu['kepentingan'] ?></td>
-                <td>
-                  <a class="btn btn-success" href="edit-tamu.php?id=<?= $tamu['id_tamu'] ?>">Ubah</a>
-                  <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')" class="btn btn-danger" href="hapus-tamu.php?id=<?= $tamu['id_tamu'] ?>">Hapus</a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          <?php } ?>
+          $no = 1;
+          foreach ($buku_tamu as $tamu) : ?>
+            <tr>
+              <td><?= $no++; ?></td>
+              <td><?= $tamu['tanggal'] ?></td>
+              <td><?= $tamu['nama_tamu'] ?></td>
+              <td><?= $tamu['alamat'] ?></td>
+              <td><?= $tamu['no_hp'] ?></td>
+              <td><?= $tamu['bertemu'] ?></td>
+              <td><?= $tamu['kepentingan'] ?></td>
+              <td>
+                <a class="btn btn-success" href="edit-tamu.php?id=<?= $tamu['id_tamu'] ?>">Ubah</a>
+                <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini?')"
+                  class="btn btn-danger"
+                  href="hapus-tamu.php?id=<?= $tamu['id_tamu'] ?>">Hapus</a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div>

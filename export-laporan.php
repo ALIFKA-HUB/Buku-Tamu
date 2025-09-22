@@ -19,9 +19,9 @@ $sheet->setCellValue('G1', 'KEPENTINGAN');
 if (isset($_GET['cari'])) {
   $p_awal  = $_GET['p_awal'];
   $p_akhir = $_GET['p_akhir'];
-  $data = mysqli_query($koneksi, "SELECT * FROM buku_tamu WHERE tanggal BETWEEN '$p_awal' AND '$p_akhir'");
+  $data = mysqli_query($koneksi, "SELECT * FROM tamu WHERE tanggal BETWEEN '$p_awal' AND '$p_akhir'");
 } else {
-  $data = mysqli_query($koneksi, "SELECT * FROM buku_tamu");
+  $data = mysqli_query($koneksi, "SELECT * FROM tamu");
 }
 
 $i = 2;

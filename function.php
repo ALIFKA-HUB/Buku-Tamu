@@ -35,17 +35,17 @@ function tambah_tamu($data)
         return false;
     }
 
-
-    // GANTI nama tabel & SEBUTKAN KOLOMNYA
+    // query insert ke tabel tamu + gambar
     $query = "INSERT INTO tamu
-              (id_tamu, tanggal, nama_tamu, alamat, no_hp, bertemu, kepentingan)
-              VALUES ('$kode', '$tanggal', '$nama_tamu', '$alamat', '$no_hp', '$bertemu', '$kepentingan')";
+              (id_tamu, tanggal, nama_tamu, alamat, no_hp, bertemu, kepentingan, gambar)
+              VALUES ('$kode', '$tanggal', '$nama_tamu', '$alamat', '$no_hp', '$bertemu', '$kepentingan', '$gambar')";
 
     mysqli_query($koneksi, $query);
     return mysqli_affected_rows($koneksi);
 }
 
 // function ubah data tamu
+
 function ubah_tamu($data)
 {
     global $koneksi;
@@ -65,19 +65,17 @@ function ubah_tamu($data)
         $gambar = uploadGambar();
     }
 
-    $query = "UPDATE buku_tamu SET
-            nama_tamu   = '$nama_tamu',
-            alamat      = '$alamat',
-            no_hp       = '$no_hp',
-            bertemu     = '$bertemu',
-            kepentingan = '$kepentingan',
-            gambar      = '$gambar'
-          WHERE id_tamu = '$id'";
-
-
+    // update tabel tamu (bukan buku_tamu)
+    $query = "UPDATE tamu SET
+                nama_tamu   = '$nama_tamu',
+                alamat      = '$alamat',
+                no_hp       = '$no_hp',
+                bertemu     = '$bertemu',
+                kepentingan = '$kepentingan',
+                gambar      = '$gambar'
+              WHERE id_tamu = '$id'";
 
     mysqli_query($koneksi, $query);
-
     return mysqli_affected_rows($koneksi);
 }
 
