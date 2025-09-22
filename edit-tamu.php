@@ -42,8 +42,9 @@ if (isset($_POST['simpan'])) {
     </div>
     <div class="card-body">
 
-      <form method="post" action="">
+      <form method="post" action="" enctype="multipart/form-data">
         <input type="hidden" name="id_tamu" id="id_tamu" value="<?= $id_tamu ?>" />
+        <input type="hidden" name="gambarLama" value="<?= $data['gambar']; ?>" />
 
         <div class="form-group row">
           <label for="nama_tamu" class="col-sm-3 col-form-label">Nama Tamu</label>
@@ -83,6 +84,15 @@ if (isset($_POST['simpan'])) {
               value="<?= $data['kepentingan'] ?>" />
           </div>
         </div>
+
+        <div class="form-group row">
+          <label for="gambar" class="col-sm-3 col-form-label">Gambar Foto</label>
+          <div class="col-sm-8">
+            <img src="assets/upload_gambar/<?= $data['gambar']; ?>" alt="-" width="30%">
+            <input type="file" class="form-control-file" id="gambar" name="gambar">
+          </div>
+        </div>
+
 
         <div class="form-group row">
           <label class="col-sm-3 col-form-label"></label>
