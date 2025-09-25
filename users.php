@@ -2,9 +2,9 @@
 include_once('template/header.php');
 
 // pengecekan user role bukan admin maka tidak boleh mengakses halaman
-if(($_SESSION['role']) != 'admin') {
-    echo "<script>alert('anda tidak memiliki akses')</script>";
-    echo "<script>window.location.href='index.php'</script>";
+if (($_SESSION['role']) != 'admin') {
+  echo "<script>alert('anda tidak memiliki akses')</script>";
+  echo "<script>window.location.href='index.php'</script>";
 }
 
 require_once('function.php');
@@ -18,40 +18,41 @@ include_once('template/header.php');
 
 
   <?php
-  // jika ada tombol simpan
+  // kalau tombol simpan ditekan
   if (isset($_POST['simpan'])) {
-
-    if (isset($_POST['simpan'])) {
-      // proses simpan data
-      // ...
+    if (tambah_user($_POST) > 0) {
+      echo '<div class="alert alert-success" role="alert">
+                Data berhasil disimpan!
+              </div>';
+    } else {
+      echo '<div class="alert alert-danger" role="alert">
+                Data gagal disimpan!
+              </div>';
     }
-    // kalau tombol ganti password diklik
-    else if (isset($_POST['ganti_password'])) {
-      if (ganti_password($_POST) > 0) {
-        echo '<div class="alert alert-success" role="alert">
+  }
+
+  // kalau tombol ganti password ditekan
+  if (isset($_POST['ganti_password'])) {
+    if (ganti_password($_POST) > 0) {
+      echo '<div class="alert alert-success" role="alert">
                 Password berhasil diubah!
               </div>';
-      } else {
-        echo '<div class="alert alert-danger" role="alert">
+    } else {
+      echo '<div class="alert alert-danger" role="alert">
                 Password gagal diubah!
               </div>';
-      }
-    }
-    if (tambah_user($_POST) > 0) {
-  ?>
-      <div class="alert alert-success" role="alert">
-        Data berhasil disimpan!
-      </div>
-    <?php
-    } else {
-    ?>
-      <div class="alert alert-danger" role="alert">
-        Data gagal disimpan!
-      </div>
-  <?php
     }
   }
   ?>
+
+  <script>
+    // ketika modal ganti password ditampilkan
+    $('#gantiPassword').on('show.bs.modal', function(e) {
+      var userId = $(e.relatedTarget).data('id'); // ambil data-id dari tombol
+      $(this).find('#id_user').val(userId); // isi hidden input id_user di modal
+    });
+  </script>
+
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -85,8 +86,10 @@ include_once('template/header.php');
                 <td><?= $user['username'] ?></td>
                 <td><?= $user['user_role'] ?></td>
                 <td>
-                  <button type="button" class="btn btn-info btn-icon-split" data-toggle="modal"
-                    data-target="#gantiPassword" data-id="<?= $user['id_user'] ?>">
+                  <button type="button" class="btn btn-info btn-icon-split"
+                    data-toggle="modal"
+                    data-target="#gantiPassword"
+                    data-id="<?= $user['id_user'] ?>">
                     <span class="text">Ganti Password</span>
                   </button>
                   <a class="btn btn-success" href="edit-user.php?id=<?= $user['id_user'] ?>">Ubah</a>
@@ -187,8 +190,8 @@ $kodeuser = $huruf . sprintf("%02s", $urutan);
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form method="post" action="ganti-password.php">
+      <form method="post" action="">
+        <div class="modal-body">
           <input type="hidden" name="id_user" id="id_user">
           <div class="form-group row">
             <label for="password" class="col-sm-4 col-form-label">Password Baru</label>
@@ -196,15 +199,16 @@ $kodeuser = $huruf . sprintf("%02s", $urutan);
               <input type="password" class="form-control" id="password" name="password" required>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
-            <button type="submit" name="ganti_password" class="btn btn-primary">Simpan</button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+          <button type="submit" name="ganti_password" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
 
 <?php
 include('template/footer.php');

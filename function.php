@@ -147,23 +147,31 @@ function hapus_user($id)
 // function ganti password user
 function ganti_password($data)
 {
-    global $koneksi;
+    global $koneksi; // pastikan koneksi sudah didefinisikan di awal (misal dari koneksi.php)
 
-    $kode         = htmlspecialchars($data["id_user"]);
-    $password     = htmlspecialchars($data["password"]);
+    $kode     = $data["id_user"];
+    $password = $data["password"];
+
+    // Hash password baru
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-    $query = "UPDATE users SET
-                password = '$password_hash'
-              WHERE id_user = '$kode'";
+    // Gunakan prepared statement
+    $stmt = mysqli_prepare($koneksi, "UPDATE users SET password = ? WHERE id_user = ?");
+    if (!$stmt) {
+        die("Query error: " . mysqli_error($koneksi));
+    }
 
-    mysqli_query($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $password_hash, $kode);
+    mysqli_stmt_execute($stmt);
 
-    return mysqli_affected_rows($koneksi);
+    $result = mysqli_stmt_affected_rows($stmt);
+
+    mysqli_stmt_close($stmt);
+
+    return $result;
 }
 
 //up foto
-
 function uploadGambar()
 {
     // ambil data file gambar dari variable $_FILES
